@@ -1,0 +1,20 @@
+python .\manage.py runserver -> chay may ao server
+python .\manage.py startapp blog -> tao mot app moi
+python manage.py makemigrations blog -> tao them models cho app
+python manage.py migrate -> them vao sqllite
+ python manage.py shell -> tuong tac sqllite
+from blog.models import post -> vao bang post trong models
+b = post(title='ku bool',body='dinh nguyen ngoc thien') -> them vao table sqllite
+b.save() -> luu lai
+post.objects.all() -> lay tat ca cac truong trong table
+b = post.object.get(id=2) -> lay gia tri id = 2
+
+django-admin startproject <Tên Project>
+
+
+
+
+create user 'studentmanagementsystem'@'localhost' identified by 'studentmanagementsystem';
+create database studentmanagementsystem ;
+grant all privileges on *.* to 'studentmanagementsystem'@'localhost';
+ ALTER user 'studentmanagementsystem'@'localhost' identified with mysql_native_password by 'studentmanagementsystem';
