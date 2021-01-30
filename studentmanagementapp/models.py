@@ -6,29 +6,36 @@ from django.db.models.signals import post_save
 # Create your models here.
 
 
-#table CustomerUser check user
+# table CustomerUser check user
 class CustomUser(AbstractUser):
-    user_type_data = ((1,'HOD'),(2,'Staff'),(3,'Student'))
-    user_type = models.CharField(default = 1, choices =user_type_data, max_length=10)
+    user_type_data = ((1, 'HOD'), (2, 'Staff'), (3, 'Student'))
+    user_type = models.CharField(
+        default=1, choices=user_type_data, max_length=10)
 
-#table admin
+# table admin
+
+
 class AdminHOD(models.Model):
     id = models.AutoField(primary_key=True)
-    admin = models.OneToOneField(CustomUser,on_delete=models.CASCADE)   
+    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#tablke staff
+# tablke staff
+
+
 class Staffs(models.Model):
     id = models.AutoField(primary_key=True)
-    admin = models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#tbale Coureses
+# tbale Coureses
+
+
 class Courses(models.Model):
     id = models.AutoField(primary_key=True)
     course_name = models.CharField(max_length=255)
@@ -36,7 +43,9 @@ class Courses(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#table Subjects 
+# table Subjects
+
+
 class Subjects(models.Model):
     id = models.AutoField(primary_key=True)
     subject_name = models.CharField(max_length=255)
@@ -46,10 +55,12 @@ class Subjects(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#table students
+# table students
+
+
 class Students(models.Model):
-    id  = models.AutoField(primary_key=True)
-    admin = models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True)
+    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     gender = models.CharField(max_length=255)
     profile_pic = models.FileField()
     address = models.TextField()
@@ -60,7 +71,9 @@ class Students(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#table Attendance
+# table Attendance
+
+
 class Attendance(models.Model):
     id = models.AutoField(primary_key=True)
     subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
@@ -69,7 +82,9 @@ class Attendance(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#tabel AttendanceReport
+# tabel AttendanceReport
+
+
 class AttendanceReport(models.Model):
     id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(Students, on_delete=models.DO_NOTHING)
@@ -78,7 +93,9 @@ class AttendanceReport(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#table LeaveReport
+# table LeaveReport
+
+
 class LeaveReportStudent(models.Model):
     id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
@@ -89,7 +106,9 @@ class LeaveReportStudent(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#table LeaveStaff
+# table LeaveStaff
+
+
 class LeaveReportStaff(models.Model):
     id = models.AutoField(primary_key=True)
     staff_id = models.ForeignKey(Staffs, on_delete=models.CASCADE)
@@ -100,7 +119,9 @@ class LeaveReportStaff(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#table FeedBackStudent
+# table FeedBackStudent
+
+
 class FeedBackStudent(models.Model):
     id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
@@ -111,7 +132,9 @@ class FeedBackStudent(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#table FeedBackStaffs
+# table FeedBackStaffs
+
+
 class FeedBackStaffs(models.Model):
     id = models.AutoField(primary_key=True)
     staff_id = models.ForeignKey(Staffs, on_delete=models.CASCADE)
@@ -122,7 +145,8 @@ class FeedBackStaffs(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-#table NotificationStudent
+# table NotificationStudent
+
 class NotificationStudent(models.Model):
     id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
@@ -132,7 +156,7 @@ class NotificationStudent(models.Model):
     objects = models.Manager()
 
 
-#table NotificationStaffs
+# table NotificationStaffs
 class NotificationStaffs(models.Model):
     id = models.AutoField(primary_key=True)
     staff_id = models.ForeignKey(Staffs, on_delete=models.CASCADE)
@@ -141,21 +165,23 @@ class NotificationStaffs(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
+
 @receiver(post_save, sender=CustomUser)
-def create_user_profile(sender,instance,created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        if instance.user_type ==1:
+        if instance.user_type == 1:
             AdminHOD.objects.create(admin=instance)
-        if instance.user_type ==2:
+        if instance.user_type == 2:
             Staffs.objects.create(admin=instance)
-        if instance.user_type ==3:
+        if instance.user_type == 3:
             Students.objects.create(admin=instance)
 
-@receiver(post_save, sender = CustomUser)
+
+@receiver(post_save, sender=CustomUser)
 def save_user_profile(sender, instance, **kwargs):
-    if instance.user_type ==1:
+    if instance.user_type == 1:
         instance.adminhod.save()
-    if instance.user_type ==2:
+    if instance.user_type == 2:
         instance.staffs.save()
-    if instance.user_type ==3:
+    if instance.user_type == 3:
         instance.students.save()
