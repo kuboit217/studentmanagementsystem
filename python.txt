@@ -13,7 +13,7 @@ django-admin startproject <Tên Project>
 
 
 
-
+các lệnh tạo mới trong py
 create user 'studentmanagementsystem'@'localhost' identified by 'studentmanagementsystem';
 create database studentmanagementsystem ;
 grant all privileges on *.* to 'studentmanagementsystem'@'localhost';

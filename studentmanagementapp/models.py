@@ -64,7 +64,7 @@ class Students(models.Model):
     gender = models.CharField(max_length=255)
     profile_pic = models.FileField()
     address = models.TextField()
-    course_id = models.ForeignKey(Courses, on_delete=models.DO_NOTHING)
+    course_id = models.ForeignKey(Courses, on_delete=models.CASCADE, default = 1)
     session_start_year = models.DateField()
     session_end_year = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)

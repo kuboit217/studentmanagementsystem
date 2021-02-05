@@ -29,7 +29,11 @@ urlpatterns = [
     path('logout_user',views.LogoutUser),
     path('admin_home', HodViews.admin_home),
     path('add_staff',HodViews.add_staff),
-    path('add_staff_save',HodViews.add_staff_save)
+    path('add_staff_save',HodViews.add_staff_save),
+    path('add_courses',HodViews.add_courses),
+    path('add_courses_save',HodViews.add_courses_save),
+     path('add_student',HodViews.add_student),
+    path('add_student_save',HodViews.add_student_save),
     
 
 
