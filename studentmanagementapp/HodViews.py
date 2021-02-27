@@ -4,6 +4,7 @@ from django.contrib import messages
 
 from studentmanagementapp.models import *
 import datetime
+from django.utils.dateparse import parse_date
 
 
 def admin_home(request):
@@ -75,24 +76,27 @@ def add_student_save(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         address = request.POST.get('address')
-        start_year = request.POST.get('session_start')
-        end_year = request.POST.get('session_end')
+        start_year_str = request.POST.get('session_start')
+        end_year_str = request.POST.get('session_end')
         course_id = request.POST.get('course')
         sex = request.POST.get('sex')
-        # try:
-        user = CustomUser.objects.create_user(
-            username=username, email=email, password=password, first_name=first_name, last_name=last_name, user_type=3)
-        user.students.address = address
-        user.students.session_start_year = start_year
-        user.students.session_end_year = end_year
-        course_obj = Courses.objects.get(id=course_id)
-        user.students.course_id = course_obj
-        user.students.gender = sex
-        user.students.profile_pic = " "
-        print(user)
-        user.save()
-        """ messages.success(request, 'Successfully Add Student')
-        return HttpResponseRedirect('/add_student')
+
+        start_year = parse_date(start_year_str)
+        end_year = parse_date(end_year_str)
+        try:
+            user = CustomUser.objects.create_user(
+                username=username, email=email, password=password, first_name=first_name, last_name=last_name, user_type=3)
+            user.students.address = address
+            user.students.session_start_year = start_year
+            user.students.session_end_year = end_year
+            course_obj = Courses.objects.get(id=course_id)
+            user.students.course_id = course_obj
+            user.students.gender = sex
+            user.students.profile_pic = " "
+            print(end_year)
+            user.save()
+            messages.success(request, 'Successfully Add Student')
+            return HttpResponseRedirect('/add_student')
         except:
             messages.error(request, 'Failed To Add Student')
-            return HttpResponseRedirect('/add_student') """
+            return HttpResponseRedirect('/add_student') 
