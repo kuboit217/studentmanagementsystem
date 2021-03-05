@@ -80,7 +80,6 @@ def add_student_save(request):
         end_year_str = request.POST.get('session_end')
         course_id = request.POST.get('course')
         sex = request.POST.get('sex')
-
         start_year = parse_date(start_year_str)
         end_year = parse_date(end_year_str)
         try:
@@ -100,3 +99,47 @@ def add_student_save(request):
         except:
             messages.error(request, 'Failed To Add Student')
             return HttpResponseRedirect('/add_student') 
+
+def add_subject(request):
+    courses = Courses.objects.all()
+    staffs = CustomUser.objects.filter(user_type = 2)
+    context = {'courses': courses , 'staffs':staffs}
+    return render(request, 'hod_template/add_subject_template.html', context)
+def add_subject_save(request):
+    if request.method != 'POST':
+        return HttpResponse('Method not allowed')
+    else:
+        subject_name = request.POST.get('subject')
+        course_id = request.POST.get('course')
+        course_obj = Courses.objects.get(id=course_id)
+        staff_id = request.POST.get('staff')
+        staff_obj = CustomUser.objects.get(id=staff_id)
+        try:
+            subject = Subjects(subject_name=subject_name, course_id=course_obj, staff_id=staff_obj)
+            #print(subject)
+            subject.save()
+            messages.success(request, 'Successfully Add Subject')
+            return HttpResponseRedirect('/add_subject')
+        except:
+            messages.error(request, 'Failed To Add Subject')
+            return HttpResponseRedirect('/add_subject') 
+
+def manage_staff(request):
+    staffs = Staffs.objects.all()
+    context = {'staffs':staffs}
+    return render(request, 'hod_template/manage_staff_template.html',context)
+
+def manage_student(request):
+    students = Students.objects.all()
+    context = {'students':students}
+    return render(request, 'hod_template/manage_student_template.html', context)
+
+def manage_course(request):
+    courses = Courses.objects.all()
+    context = {'courses':courses}
+    return render(request, 'hod_template/manage_course_template.html', context)
+
+def manage_subject(request):
+    subjects = Subjects.objects.all()
+    context = {'subjects':subjects}
+    return render(request, 'hod_template/manage_subject_template.html',context)

@@ -32,8 +32,14 @@ urlpatterns = [
     path('add_staff_save',HodViews.add_staff_save),
     path('add_courses',HodViews.add_courses),
     path('add_courses_save',HodViews.add_courses_save),
-     path('add_student',HodViews.add_student),
+    path('add_student',HodViews.add_student),
     path('add_student_save',HodViews.add_student_save),
+    path('add_subject',HodViews.add_subject),
+    path('add_subject_save',HodViews.add_subject_save),
+    path('manage_staff',HodViews.manage_staff),
+    path('manage_student',HodViews.manage_student),
+    path('manage_course',HodViews.manage_course),
+    path('manage_subject',HodViews.manage_subject),
     
 
 
